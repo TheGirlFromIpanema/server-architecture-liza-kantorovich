@@ -3,6 +3,7 @@ import {PORT} from "./config/userServerConfig.ts";
 import {userRouters} from "./routers/userRoutes.ts";
 import {UserController} from "./controllers/UserController{.ts";
 import {UserServiceEmbeddedImpl} from "./service/UserServiceEmbeddedImpl.ts";
+import {myLogger} from "./events/logger.ts";
 
 export const launchServer = () => {
     const userService = new UserServiceEmbeddedImpl();
@@ -12,5 +13,10 @@ export const launchServer = () => {
       await userRouters(req, res, userController) ;
     }).listen(PORT, () => {
         console.log(`UserServer runs at http://localhost:${PORT}`)
+    })
+
+    process.on('SIGINT', (code) => {
+        myLogger.saveToFile("Server shutdown");
+        process.exit();
     })
 }
