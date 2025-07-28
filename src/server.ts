@@ -22,6 +22,7 @@ export const launchServer = () => {
             myLogger.log("Saving....");
         } catch (e) {
             myLogger.log("Failed to save data on shutdown");
+            myLogger.save("Failed to save data on shutdown");
         }
         myLogger.saveToFile("Server shutdown by Ctrl+C");
         process.exit();

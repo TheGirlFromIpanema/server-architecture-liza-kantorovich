@@ -75,7 +75,7 @@ export  class UserServiceEmbeddedImpl implements UserService, UserFilePersistenc
     }
 
 
-    saveDataToFile(): Promise<string> {
+   async saveDataToFile(): Promise<string> {
         return new Promise((resolve, reject) => {
             const ws = fs.createWriteStream('data.txt')
             const data = JSON.stringify(this.users);
@@ -96,7 +96,6 @@ export  class UserServiceEmbeddedImpl implements UserService, UserFilePersistenc
             })
             ws.end();
         })
-
     }
 }
 
