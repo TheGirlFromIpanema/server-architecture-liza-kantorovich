@@ -16,7 +16,10 @@ class Logger extends EventEmitter{
     }
 
     addLogToArray(message:string) {
-        this.logArray.push({date: new Date().toISOString(), message})
+        this.logArray.push({date: new Date().toLocaleString("en-GB", {
+                timeZone: "Asia/Jerusalem",
+                hour12: false,
+            }), message})
 
 }
     getLogArray(){
@@ -27,7 +30,10 @@ class Logger extends EventEmitter{
 export const myLogger = new Logger();
 
 myLogger.on('logged', (message:string)=> {
-    console.log(new Date().toISOString(), message)
+    console.log(new Date().toLocaleString("en-GB", {
+        timeZone: "Asia/Jerusalem",
+        hour12: false,
+    }), message)
 })
 
 myLogger.on('saved', (message: string) => {

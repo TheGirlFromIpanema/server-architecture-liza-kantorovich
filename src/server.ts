@@ -7,16 +7,24 @@ import {myLogger} from "./events/logger.ts";
 
 export const launchServer = () => {
     const userService = new UserServiceEmbeddedImpl();
-    const userController:UserController = new UserController(userService);
+    userService.restoreDataFromFile();
+    const userController: UserController = new UserController(userService);
 
     createServer(async (req, res) => {
-      await userRouters(req, res, userController) ;
+        await userRouters(req, res, userController);
     }).listen(PORT, () => {
         console.log(`UserServer runs at http://localhost:${PORT}`)
     })
 
-    process.on('SIGINT', (code) => {
-        myLogger.saveToFile("Server shutdown");
+    process.on('SIGINT', async (code) => {
+        try {
+            await userService.saveDataToFile();
+            myLogger.log("Saving....");
+        } catch (e) {
+            myLogger.log("Failed to save data on shutdown");
+        }
+        myLogger.saveToFile("Server shutdown by Ctrl+C");
         process.exit();
+
     })
 }
